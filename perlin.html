@@ -1,0 +1,106 @@
+<canvas id="c"></canvas>
+
+<script>
+
+
+  const DEBUG = false
+  c.width = 1000
+  c.height = 1000
+  ctx = c.getContext('2d')
+
+  console.log('perlin')
+
+
+
+  const xWidth = 10
+  const yWidth = 10
+  const grid = []
+
+  /* create vector field */
+  for(let i = 0; i <= xWidth; i ++) {
+    for(let j = 0; j <= yWidth; j ++) {
+      grid[i * xWidth + j] = {x : Math.random(), y : Math.random()}
+    }
+  }
+
+  /* create gradiant for point */
+  function gradient(x, y) {
+    let x0 = Math.floor(x / 100)
+    let y0 = Math.floor(y / 100)
+    let g0 = grid[x0 * xWidth + y0]
+
+    let x1 = Math.ceil(x / 100)
+    let y1 = Math.floor(y / 100)
+    let g1 = grid[x1 * xWidth + y1]
+
+    let x2 = Math.ceil(x / 100)
+    let y2 = Math.ceil(y / 100)
+    let g2 = grid[x2 * xWidth + y2]
+
+    let x3 = Math.floor(x / 100)
+    let y3 = Math.ceil(y / 100)
+    let g3 = grid[x3 * xWidth + y3]
+
+    /* Interpolation */
+
+    let gradA = (((x - x0 * 100) * g0.x) + ((y - y0 * 100) * g0.y)) / 100
+    let gradB = (((x1 * 100 - x) * g1.x) + ((y - y1 * 100) * g1.y)) / 100
+    let gradC = (((x2 * 100 - x) * g2.x) + ((y2 * 100 - y) * g2.y)) / 100
+    let gradD = (((x - x3 * 100) * g3.x) + ((y3 * 100 - y) * g3.y)) / 100
+
+
+    if(DEBUG) {
+      console.log('grids ', g0, g1, g2, g3)
+      ctx.fillStyle = "#ff0000"
+      ctx.fillRect(x0 * 100, y0*100, 10, 10)
+      ctx.fillRect(x1 * 100, y1*100, 10, 10)
+      ctx.fillRect(x2 * 100, y2*100, 10, 10)
+      ctx.fillRect(x3 * 100, y3*100, 10, 10)
+    }
+
+    return (gradA * Math.hypot(x - x0 * 100, y - y0 * 100)) + (gradB * Math.hypot(x - x1 * 100, y - y1 * 100))
+    + (gradC * Math.hypot(x - x2 * 100, y - y2 * 100)) + (gradD * Math.hypot(x - x3 * 100, y - y3 * 100))
+
+  }
+
+
+//  let g = gradient(801,901)
+
+  for(let i = 0; i < 1000; i ++) {
+    for(let j = 0; j < 1000; j ++) {
+
+     let v = gradient(i, j) / 2.5
+    // console.log(v)
+     ctx.fillStyle = `hsla(0, 0%, ${v}%, 1)`
+    ctx.fillRect(i,j,1,1)
+
+
+    }
+  }
+
+  /* debug draw */
+  if(DEBUG) {
+
+
+  //  console.log('grad ', g)
+    ctx.fillStyle = "#000000"
+    ctx.fillRect(250,50,10,10)
+    ctx.fillRect(250,50,10,10)
+
+    for(let i = 0; i < xWidth; i++) {
+      for(let j = 0; j < yWidth; j ++) {
+        let a = grid[i * xWidth + j]
+
+
+        ctx.fillText(a.x.toFixed(1), i * 100 + j, j * 100 + 10)
+        ctx.fillText(a.y.toFixed(1), i * 100 + j, j * 100 + 20)
+
+      }
+    }
+
+
+}
+
+
+
+</script>
