@@ -58,8 +58,8 @@
       ctx.fillRect(x3 * 100, y3*100, 10, 10)
     }
 
-    return (gradA * Math.hypot(x - x0 * 100, y - y0 * 100)) + (gradB * Math.hypot(x - x1 * 100, y - y1 * 100))
-    + (gradC * Math.hypot(x - x2 * 100, y - y2 * 100)) + (gradD * Math.hypot(x - x3 * 100, y - y3 * 100))
+    return (gradA * (Math.hypot(x - x0 * 100, y - y0 * 100))) + (gradB * ( Math.hypot(x - x1 * 100, y - y1 * 100)))
+    + (gradC * (Math.hypot(x - x2 * 100, y - y2 * 100))) + (gradD * ( Math.hypot(x - x3 * 100, y - y3 * 100)))
 
   }
 
